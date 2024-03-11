@@ -1,5 +1,5 @@
 const maxSize = 10;
-let storedSize = 0;
+let storedSize;
 let storedFiles = [];
 
 let total_used;
@@ -10,6 +10,10 @@ document.addEventListener('DOMContentLoaded', () => {
     mb_left = document.getElementById("mb-left");
     gradient_bar = document.querySelector(".gradient-bar");
 });
+window.onload = () => {
+    storedSize = parseInt(localStorage.getItem('storedSize')) || "0.8rem";
+    updateView();
+};
 
 async function uploadFiles(){
     let size = 0;
@@ -30,6 +34,7 @@ async function uploadFiles(){
     files.forEach(file => {storedFiles.push({fileName: file.name, fileSize: file.size/1024/1024});});
 
     updateView();
+    localStorage.setItem('storedSize', storedSize);
 }
 
 async function extractFileFromHandler(fileHandlers){
@@ -58,6 +63,5 @@ function validateFiles(files, size){
 function updateView(){
     total_used.innerText = storedSize.toFixed(2);
     mb_left.innerText = (maxSize - storedSize).toFixed(2);
-    console.log(storedSize);
     gradient_bar.style.width = `${(storedSize).toFixed(2)*10}%`;
 }
