@@ -1,15 +1,23 @@
-const maxSize = 100;
+const maxSize = 10;
 let storedSize = 0;
 let storedFiles = [];
 
+let total_used;
+let mb_left;
+let gradient_bar;
+document.addEventListener('DOMContentLoaded', () => {
+    total_used = document.getElementById("total-used");
+    mb_left = document.getElementById("mb-left");
+    gradient_bar = document.querySelector(".gradient-bar");
+});
+
 async function uploadFiles(){
     let size = 0;
-    const pickerOptions = {multiple: true};
-    const filesSystemFileHandler = await showOpenFilePicker(pickerOptions);
+    const filesSystemFileHandler = await showOpenFilePicker({multiple: true});
     const files = await extractFileFromHandler(filesSystemFileHandler);
 
     files.forEach(element => {
-        size+= element.size/1024/1024; //Size in MB
+        size+= element.size/1024/1024;
     });
 
     const error = validateFiles(files, size);
@@ -20,6 +28,8 @@ async function uploadFiles(){
 
     storedSize += size;
     files.forEach(file => {storedFiles.push({fileName: file.name, fileSize: file.size/1024/1024});});
+
+    updateView();
 }
 
 async function extractFileFromHandler(fileHandlers){
@@ -43,4 +53,11 @@ function validateFiles(files, size){
         }
     }
     return unsupportedFileFound ? error : "";
+}
+
+function updateView(){
+    total_used.innerText = storedSize.toFixed(2);
+    mb_left.innerText = (maxSize - storedSize).toFixed(2);
+    console.log(storedSize);
+    gradient_bar.style.width = `${(storedSize).toFixed(2)*10}%`;
 }
