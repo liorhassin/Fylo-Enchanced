@@ -236,3 +236,7 @@ h2 {
     display: none;
   }
 }
+
+#upload-button{
+  cursor: pointer;
+}

@@ -8,6 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="styles.css" rel="stylesheet">
+    <script src="script.js"></script>
     </link>
     <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
     <title>Fylo data storage component</title>
@@ -23,7 +24,7 @@
                     <img src="images/icon-document.svg" alt="" aria-hidden="true" />
                 </div>
                 <div class="icon-img">
-                    <img src="images/icon-folder.svg" alt="" aria-hidden="true" />
+                    <img id="upload-button" src="images/icon-folder.svg" alt="" aria-hidden="true" onclick="uploadFiles()"/>
                 </div>
                 <div class="icon-img">
                     <img src="images/icon-upload.svg" alt="" aria-hidden="true" />
@@ -52,5 +53,4 @@
         </section>
     </main>
 </body>
-
 </html>
