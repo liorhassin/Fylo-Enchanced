@@ -131,9 +131,10 @@ h1 span {
   align-items: center;
   background: var(--gradient-bar);
   background: var(--gradient);
+  transition: width 1.2s;
   border-radius: 50px;
   filter: saturate();
-  width: 74%;
+  width: 0.8rem;
   height: 0.8rem;
   position: relative;
 }
@@ -166,7 +167,7 @@ h2 {
 /** GB left **/
 .gb-left p {
   color: var(--dark-blue);
-  font-size: 2.4rem;
+  font-size: 1.9rem;
   font-weight: 700;
   letter-spacing: 2px;
   margin: 0;
