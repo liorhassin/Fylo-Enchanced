@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     gradient_bar = document.querySelector(".gradient-bar");
 });
 window.onload = () => {
-    storedSize = parseInt(localStorage.getItem('storedSize')) || "0.8rem";
+    storedSize = parseFloat(localStorage.getItem('storedSize')) || 0;
     updateView();
 };
 
@@ -63,5 +63,5 @@ function validateFiles(files, size){
 function updateView(){
     total_used.innerText = storedSize.toFixed(2);
     mb_left.innerText = (maxSize - storedSize).toFixed(2);
-    gradient_bar.style.width = `${(storedSize).toFixed(2)*10}%`;
+    gradient_bar.style.width = `${storedSize.toFixed(2)*10}%`;
 }
