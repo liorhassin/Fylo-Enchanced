@@ -24,7 +24,9 @@
                     <img src="images/icon-document.svg" alt="" aria-hidden="true" />
                 </div>
                 <div class="icon-img">
-                    <img id="upload-button" src="images/icon-folder.svg" alt="" aria-hidden="true" onclick="uploadFiles()"/>
+                    <input id="input-button" type="file" multiple>
+                        <img src="images/icon-folder.svg" alt="">
+                    </input>
                 </div>
                 <div class="icon-img">
                     <img src="images/icon-upload.svg" alt="" aria-hidden="true" />
@@ -33,7 +35,7 @@
         </section>
         <!-- Storage Container -->
         <section class="storage-container">
-            <h1>You've used <span id="total-used">0<span> MB</span></span> of your storage</h1>
+            <h1>You've used <span id="total-used">0</span><span id="unit"></span> of your storage</h1>
             <!-- Progress Bar -->
             <section class="progress-bar">
                 <div class="gradient-bar">
@@ -43,12 +45,12 @@
                 </div>
             </section>
             <h2>
-                <span>0 MB</span>
-                <span>10 MB</span>
+                <span>0 <span id="unit"></span></span>
+                <span>10 <span id="unit"></span></span>
             </h2>
             <!-- GB left -->
             <section class="gb-left">
-                <p><p id="mb-left">10</p><span>MB left</span></p>
+                <p><p id="mb-left">10</p><span><span id="unit"></span> left</span></p>
             </section>
         </section>
     </main>
