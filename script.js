@@ -19,7 +19,7 @@ function InitApp(){
     window.onload = () => {
         storedSizeBytes = parseFloat(localStorage.getItem('storedSizeBytes')) || 0;
         updateView();
-        var unitElements = document.querySelectorAll("#unit");
+        let unitElements = document.querySelectorAll("#unit");
         unitElements.forEach(function(unitElement) {
             unitElement.textContent = unit;
         });
