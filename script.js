@@ -1,40 +1,44 @@
-const maxSize = 10;
-let storedSize;
-let storedFiles = [];
+const conversionRate = 1024*1024;
+const maxSizeBytes = 10 * conversionRate;
 
-let total_used;
-let mb_left;
-let gradient_bar;
-document.addEventListener('DOMContentLoaded', () => {
-    total_used = document.getElementById("total-used");
-    mb_left = document.getElementById("mb-left");
-    gradient_bar = document.querySelector(".gradient-bar");
-});
-window.onload = () => {
-    storedSize = parseFloat(localStorage.getItem('storedSize')) || 0;
-    updateView();
-};
+let storedSizeBytes;
+let totalBytesUsed;
+let bytesLeft;
+let gradientBar;
+
+InitApp();
+
+function InitApp(){
+    document.addEventListener('DOMContentLoaded', () => {
+        totalBytesUsed = document.getElementById("total-used");
+        bytesLeft = document.getElementById("mb-left");
+        gradientBar = document.querySelector(".gradient-bar");
+    });
+    
+    window.onload = () => {
+        storedSizeBytes = parseFloat(localStorage.getItem('storedSizeBytes')) || 0;
+        updateView();
+    };
+}
 
 async function uploadFiles(){
-    let size = 0;
+    let newFilesSize = 0;
     const filesSystemFileHandler = await showOpenFilePicker({multiple: true});
     const files = await extractFileFromHandler(filesSystemFileHandler);
 
     files.forEach(element => {
-        size+= element.size/1024/1024;
+        newFilesSize += element.size;
     });
 
-    const error = validateFiles(files, size);
+    const error = validateUpload(files, newFilesSize);
     if(error !== "") {
         alert(error);
         return;
     }
 
-    storedSize += size;
-    files.forEach(file => {storedFiles.push({fileName: file.name, fileSize: file.size/1024/1024});});
-
+    storedSizeBytes += newFilesSize;
+    localStorage.setItem('storedSizeBytes', storedSizeBytes);
     updateView();
-    localStorage.setItem('storedSize', storedSize);
 }
 
 async function extractFileFromHandler(fileHandlers){
@@ -46,10 +50,12 @@ async function extractFileFromHandler(fileHandlers){
     return files;
 }
 
-function validateFiles(files, size){
-    if(size + storedSize > maxSize) return "Error: Size exceeded maximum!";
+function validateUpload(files, size){
+    if(size + storedSizeBytes > maxSizeBytes) return "Error: Size exceeded maximum!";
+
     const fileRegex = new RegExp("[^\\s]+(.*?)\\.(jpg|jpeg|png|gif|JPG|JPEG|PNG|GIF)$");
     let error = "Error: Following files format are not supported -> ";
+
     let unsupportedFileFound = false;
     for(let i = 0; i < files.length; i++) {
         if(!fileRegex.test(files[i].name)){
@@ -61,7 +67,7 @@ function validateFiles(files, size){
 }
 
 function updateView(){
-    total_used.innerText = storedSize.toFixed(2);
-    mb_left.innerText = (maxSize - storedSize).toFixed(2);
-    gradient_bar.style.width = `${storedSize.toFixed(2)*10}%`;
+    totalBytesUsed.innerText = (storedSizeBytes/conversionRate).toFixed(2);
+    bytesLeft.innerText = ((maxSizeBytes - storedSizeBytes)/conversionRate).toFixed(2);
+    gradientBar.style.width = `${(storedSizeBytes/conversionRate).toFixed(2)*10}%`;
 }
