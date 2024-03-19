@@ -238,6 +238,10 @@ h2 {
   }
 }
 
-#input-button{
-  
+input[type="file"] {
+  display: none;
+}
+
+.file-label {
+  cursor: pointer;
 }

@@ -7,33 +7,32 @@ let totalBytesUsed;
 let bytesLeft;
 let gradientBar;
 
-InitApp();
-
-function InitApp(){
+const InitApp = () => {
     document.addEventListener('DOMContentLoaded', () => {
         totalBytesUsed = document.getElementById("total-used");
         bytesLeft = document.getElementById("mb-left");
         gradientBar = document.querySelector(".gradient-bar");
+        const uploadButton = document.getElementById("avatar");
+        uploadButton.addEventListener("change", uploadFiles);
     });
     
     window.onload = () => {
         storedSizeBytes = parseFloat(localStorage.getItem('storedSizeBytes')) || 0;
         updateView();
-        let unitElements = document.querySelectorAll("#unit");
+        const unitElements = document.querySelectorAll("#unit");
         unitElements.forEach(element => {
             element.textContent = unit;
         });
     };
 }
 
-async function uploadFiles(){
+const uploadFiles = async (event) => {
     let newFilesSize = 0;
-    const filesSystemFileHandler = await showOpenFilePicker({multiple: true});
-    const files = await extractFileFromHandler(filesSystemFileHandler);
 
-    files.forEach(element => {
-        newFilesSize += element.size;
-    });
+    const files = event.target.files;
+    for(const file of files){
+        newFilesSize += file.size;
+    }
 
     const error = validateUpload(files, newFilesSize);
     if(error !== "") {
@@ -46,16 +45,7 @@ async function uploadFiles(){
     updateView();
 }
 
-async function extractFileFromHandler(fileHandlers){
-    const files = [];
-    for (const fileHandler of fileHandlers) {
-        const file = await fileHandler.getFile();
-        files.push(file);
-    }
-    return files;
-}
-
-function validateUpload(files, size){
+const validateUpload = (files, size) => {
     if(size + storedSizeBytes > maxSizeBytes) return "Error: Size exceeded maximum!";
 
     const fileRegex = new RegExp("[^\\s]+(.*?)\\.(jpg|jpeg|png|gif|JPG|JPEG|PNG|GIF)$");
@@ -71,8 +61,10 @@ function validateUpload(files, size){
     return unsupportedFileFound ? error : "";
 }
 
-function updateView(){
+const updateView = () => {
     totalBytesUsed.innerText = (storedSizeBytes/conversionRate).toFixed(2);
     bytesLeft.innerText = ((maxSizeBytes - storedSizeBytes)/conversionRate).toFixed(2);
     gradientBar.style.width = `${(storedSizeBytes/conversionRate).toFixed(2)*10}%`;
 }
+
+InitApp();
