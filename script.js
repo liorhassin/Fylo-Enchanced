@@ -3,20 +3,9 @@ const maxSizeBytes = 10 * conversionRate;
 const unit = "MB";
 
 let storedSizeBytes;
-let totalBytesUsed;
-let bytesLeft;
-let gradientBar;
 
 const InitApp = () => {
-    document.addEventListener('DOMContentLoaded', () => {
-        totalBytesUsed = document.getElementById("total-used");
-        bytesLeft = document.getElementById("mb-left");
-        gradientBar = document.querySelector(".gradient-bar");
-        const uploadButton = document.getElementById("avatar");
-        uploadButton.addEventListener("change", uploadFiles);
-    });
-    
-    window.onload = () => {
+    onload = () => {
         storedSizeBytes = parseFloat(localStorage.getItem('storedSizeBytes')) || 0;
         updateView();
         const unitElements = document.querySelectorAll("#unit");
@@ -62,8 +51,13 @@ const validateUpload = (files, size) => {
 }
 
 const updateView = () => {
+    totalBytesUsed = document.getElementById("total-used");
     totalBytesUsed.innerText = (storedSizeBytes/conversionRate).toFixed(2);
+
+    bytesLeft = document.getElementById("mb-left");
     bytesLeft.innerText = ((maxSizeBytes - storedSizeBytes)/conversionRate).toFixed(2);
+
+    gradientBar = document.querySelector(".gradient-bar");
     gradientBar.style.width = `${(storedSizeBytes/conversionRate).toFixed(2)*10}%`;
 }
 
