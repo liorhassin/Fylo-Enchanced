@@ -1,5 +1,6 @@
 const conversionRate = 1024*1024;
 const maxSizeBytes = 10 * conversionRate;
+const unit = "MB";
 
 let storedSizeBytes;
 let totalBytesUsed;
@@ -18,6 +19,10 @@ function InitApp(){
     window.onload = () => {
         storedSizeBytes = parseFloat(localStorage.getItem('storedSizeBytes')) || 0;
         updateView();
+        var unitElements = document.querySelectorAll("#unit");
+        unitElements.forEach(function(unitElement) {
+            unitElement.textContent = unit;
+        });
     };
 }
 
